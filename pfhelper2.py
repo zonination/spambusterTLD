@@ -24,7 +24,7 @@ while True:
                         r.subreddit(item.subreddit.display_name).banned.add(item.author.name, ban_reason='spam: {0}'.format(justice), ban_message='spam: {0}'.format(justice))
                         print('Banned /u/{0} from /r/{1} for spamming {2}'.format(item.author.name, item.subreddit.display_name, justice))
                     
-        time.sleep(30)
+        time.sleep(120)
     # Exception list for when Reddit inevitably screws up
     except praw.exceptions.APIException:
         print('\nAn API exception happened.\nTaking a coffee break.\n')
