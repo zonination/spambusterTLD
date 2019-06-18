@@ -21,8 +21,8 @@ while True:
                     # If you want an age filter, add: and ((time.time() - item.author.created_utc) < (60 * 60 * 24 * 30))
                     if (justice in blacklist):
                         item.mod.remove(spam=True)
-                        r.subreddit(item.subreddit.display_name).banned.add(item.author.name, ban_reason='spam: {0}'.format(black), ban_message='spam: {0}'.format(black))
-                        print('Banned /u/{0} from /r/{1} for spamming {2}'.format(item.author.name, item.subreddit.display_name, black))
+                        r.subreddit(item.subreddit.display_name).banned.add(item.author.name, ban_reason='spam: {0}'.format(justice), ban_message='spam: {0}'.format(justice))
+                        print('Banned /u/{0} from /r/{1} for spamming {2}'.format(item.author.name, item.subreddit.display_name, justice))
                     
         time.sleep(10)
     # Exception list for when Reddit inevitably screws up
