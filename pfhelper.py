@@ -15,7 +15,8 @@ while True:
     try:
         for item in r.subreddit('mod').mod.modqueue(only='comments'):
             for black in blacklist:
-                if black in str.split(item.body, '/'):
+                # if item is in blacklist, and if account age is less than 30 days
+                if (black in str.split(item.body, '/')) and ((time.time() - item.author.created_utc) < (60 * 60 * 24 * 30)):
                     item.mod.remove(spam=True)
                     r.subreddit(item.subreddit.display_name).banned.add(item.author.name, ban_reason='spam: {0}'.format(black), ban_message='spam: {0}'.format(black))
                     print('Banned /u/{0} from /r/{1} for spamming {2}'.format(item.author.name, item.subreddit.display_name, black))
