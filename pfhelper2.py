@@ -9,34 +9,56 @@ r = rlogin.pf()
 print('Logged in as: {0}'.format(r.user.me()))
 print('')
 
-# Redirected here? Blacklisted site.
+# Redirected here? Blacklist these sites.
 blacklist = ['stockprice.com', 'truetradinggroup.com']
 
+
+# MODULE FOR COMMENTS
+def comments():
+    # Review the comments in modqueue
+    for item in r.subreddit('mod').mod.modqueue(only='comments'):
+        # Check every word of the comment
+        for body in str.split(item.body):
+            # Split every open-parentheses
+            for string in str.split(body, '('):
+                # Check if there's an opening link [like reddit formatting](http://reddit.com)
+                if string.startswith('http'):
+                    # Check to see if the URL ends at one of our blacklisted sites. If you want an age filter, add: and ((time.time() - item.author.created_utc) < (60 * 60 * 24 * days))
+                    justice = str.split(requests.get( str.split(string,')')[0] ).url, '/')[2]
+                    if (justice in blacklist):
+                        item.mod.remove(spam=True)
+                        r.subreddit(item.subreddit.display_name).banned.add(item.author.name, ban_reason='spam: {0}'.format(justice), ban_message='spam: {0}'.format(justice))
+                        print('Banned /u/{0} from /r/{1} for spamming {2} (comment)'.format(item.author.name, item.subreddit.display_name, justice))
+                        return
+
+
+# MODULE FOR SUBMISSIONS
+def submissions():
+    # Review the submissions in modqueue
+    for item in r.subreddit('mod').mod.modqueue(only='submissions'):
+        # Check every word of the submission
+        for body in str.split(item.selftext):
+            # Split every open-parentheses
+            for string in str.split(body, '('):
+                # Check if there's an opening link [like reddit formatting](http://reddit.com)
+                if string.startswith('http'):
+                    # Check to see if the URL ends at one of our blacklisted sites. If you want an age filter, add: and ((time.time() - item.author.created_utc) < (60 * 60 * 24 * days))
+                    justice = str.split(requests.get( str.split(string,')')[0] ).url, '/')[2]
+                    if (justice in blacklist):
+                        item.mod.remove(spam=True)
+                        r.subreddit(item.subreddit.display_name).banned.add(item.author.name, ban_reason='spam: {0}'.format(justice), ban_message='spam: {0}'.format(justice))
+                        print('Banned /u/{0} from /r/{1} for spamming {2} (submission)'.format(item.author.name, item.subreddit.display_name, justice))
+                        return
+
+
+
+# MAIN LOOP
 while True:
     try:
-        # MODULE FOR COMMENTS
-        for item in r.subreddit('mod').mod.modqueue(only='comments'):
-            for string in str.split(item.body, '('):
-                if string.startswith('http'):
-                    justice = str.split(requests.get(str.split(string, ')')[0]).url, '/')[2]
-                    # If you want an age filter, add: and ((time.time() - item.author.created_utc) < (60 * 60 * 24 * 30))
-                    if (justice in blacklist):
-                        item.mod.remove(spam=True)
-                        r.subreddit(item.subreddit.display_name).banned.add(item.author.name, ban_reason='spam: {0}'.format(justice), ban_message='spam: {0}'.format(justice))
-                        print('Banned /u/{0} from /r/{1} for spamming {2}'.format(item.author.name, item.subreddit.display_name, justice))
-                        break
-        # MODULE FOR SUBMISSIONS
-        for item in r.subreddit('mod').mod.modqueue(only='submissions'):
-            for string in str.split(item.selftext, '('):
-                if string.startswith('http'):
-                    justice = str.split(requests.get(str.split(string, ')')[0]).url, '/')[2]
-                    # If you want an age filter, add: and ((time.time() - item.author.created_utc) < (60 * 60 * 24 * 30))
-                    if (justice in blacklist):
-                        item.mod.remove(spam=True)
-                        r.subreddit(item.subreddit.display_name).banned.add(item.author.name, ban_reason='spam: {0}'.format(justice), ban_message='spam: {0}'.format(justice))
-                        print('Banned /u/{0} from /r/{1} for spamming {2}'.format(item.author.name, item.subreddit.display_name, justice))
-                        break
-                    
+        comments()
+        submissions()
+        
+        # Now sleeeeeeep!
         time.sleep(30)
     # Exception list for when Reddit inevitably screws up
     except praw.exceptions.APIException:
