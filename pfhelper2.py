@@ -24,6 +24,7 @@ while True:
                         item.mod.remove(spam=True)
                         r.subreddit(item.subreddit.display_name).banned.add(item.author.name, ban_reason='spam: {0}'.format(justice), ban_message='spam: {0}'.format(justice))
                         print('Banned /u/{0} from /r/{1} for spamming {2}'.format(item.author.name, item.subreddit.display_name, justice))
+                        break
         # MODULE FOR SUBMISSIONS
         for item in r.subreddit('mod').mod.modqueue(only='submissions'):
             for string in str.split(item.selftext, '('):
@@ -34,6 +35,7 @@ while True:
                         item.mod.remove(spam=True)
                         r.subreddit(item.subreddit.display_name).banned.add(item.author.name, ban_reason='spam: {0}'.format(justice), ban_message='spam: {0}'.format(justice))
                         print('Banned /u/{0} from /r/{1} for spamming {2}'.format(item.author.name, item.subreddit.display_name, justice))
+                        break
                     
         time.sleep(30)
     # Exception list for when Reddit inevitably screws up
