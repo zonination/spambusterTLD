@@ -28,7 +28,11 @@ def comments():
                     if (justice in blacklist):
                         item.mod.remove(spam=True)
                         r.subreddit(item.subreddit.display_name).banned.add(item.author.name, ban_reason='spam: {0}'.format(justice), ban_message='spam: {0}'.format(justice))
+                        # Justice has been delivered. Now show proof and log the file.
                         print('Banned /u/{0} from /r/{1} for spamming {2} (comment)'.format(item.author.name, item.subreddit.display_name, justice))
+                        f = open('log.csv', 'a+')
+                        f.write('comment, {0}, {1}, {2}, https://www.reddit.com{3}\n'.format(item.author.name, item.subreddit.display_name, justice, item.permalink))
+                        f.close()
                         return
 
 
@@ -47,7 +51,11 @@ def submissions():
                     if (justice in blacklist):
                         item.mod.remove(spam=True)
                         r.subreddit(item.subreddit.display_name).banned.add(item.author.name, ban_reason='spam: {0}'.format(justice), ban_message='spam: {0}'.format(justice))
+                        # Justice has been delivered. Now show proof and log the file.
                         print('Banned /u/{0} from /r/{1} for spamming {2} (submission)'.format(item.author.name, item.subreddit.display_name, justice))
+                        f = open('log.csv', 'a+')
+                        f.write('submission, {0}, {1}, {2}, https://www.reddit.com{3}\n'.format(item.author.name, item.subreddit.display_name, justice, item.permalink))
+                        f.close()
                         return
 
 
@@ -59,7 +67,7 @@ while True:
         submissions()
         
         # Now sleeeeeeep!
-        time.sleep(30)
+        time.sleep(5)
     # Exception list for when Reddit inevitably screws up
     except praw.exceptions.APIException:
         print('\nAn API exception happened.\nTaking a coffee break.\n')
