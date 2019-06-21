@@ -67,7 +67,7 @@ while True:
         submissions()
         
         # Now sleeeeeeep!
-        time.sleep(5)
+        time.sleep(15)
     # Exception list for when Reddit inevitably screws up
     except praw.exceptions.APIException:
         print('\nAn API exception happened.\nTaking a coffee break.\n')
@@ -86,6 +86,6 @@ while True:
                 item.mark_read()
     except (KeyboardInterrupt, SystemExit):
         raise
-#    except:
-#        print('\nException happened (PFhelper).\nTaking a coffee break.\n')
-#        time.sleep(30)
+    except:
+        print('\nException happened (PFhelper).\nTaking a coffee break.\n')
+        time.sleep(30)
