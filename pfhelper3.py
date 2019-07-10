@@ -19,7 +19,7 @@ def submissions():
             # Justice has been delivered. Now show proof and log the file.
             print('Banned /u/{0} from /r/{1} for spamming viajarencamboya.com'.format(item.author.name, item.subreddit.display_name))
             f = open('log.csv', 'a+')
-            f.write('{0}, {1}, {2}, https://www.reddit.com{3}\n'.format(item.author.name, item.subreddit.display_name, 'viajarencamboya.com', item.permalink))
+            f.write('{0},{1},{2},https://www.reddit.com{3}\n'.format(item.author.name, item.subreddit.display_name, 'viajarencamboya.com', item.permalink))
             f.close()
             return
 
