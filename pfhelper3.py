@@ -8,18 +8,23 @@ r = rlogin.pf()
 print('Logged in as: {0}'.format(r.user.me()))
 print('')
 
+# Blacklist
+blist = ['viajarencamboya.com', 'hangbiz.com']
+
 # MODULE FOR SUBMISSIONS
 def submissions():
     # Review the submissions in modqueue
     for item in r.subreddit('mod').mod.modqueue(only='submissions'):
-        if item.domain == 'viajarencamboya.com':
+        if item.domain in blist:
+            
             item.mod.nsfw()
             item.mod.remove(spam=True)
-            r.subreddit(item.subreddit.display_name).banned.add(item.author.name, ban_reason='porn spam: viajarencamboya.com')
-            # Justice has been delivered. Now show proof and log the file.
-            print('Banned /u/{0} from /r/{1} for spamming viajarencamboya.com'.format(item.author.name, item.subreddit.display_name))
+            r.subreddit(item.subreddit.display_name).banned.add(item.author.name, ban_reason='spam: {0}'.format(item.domain))
+            
+            # King's Justice has been delivered. Now show proof and log the file.
+            print('Banned /u/{0} from /r/{1} for spamming {2}'.format(item.author.name, item.subreddit.display_name, item.domain))
             f = open('log.csv', 'a+')
-            f.write('{0},{1},{2},https://www.reddit.com{3}\n'.format(item.author.name, item.subreddit.display_name, 'viajarencamboya.com', item.permalink))
+            f.write('{0},{1},{2},https://www.reddit.com{3}\n'.format(item.author.name, item.subreddit.display_name, item.domain, item.permalink))
             f.close()
             return
 
