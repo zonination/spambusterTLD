@@ -9,7 +9,7 @@ print('Logged in as: {0}'.format(r.user.me()))
 print('')
 
 # Blacklist
-blist = ['viajarencamboya.com', 'hangbiz.com']
+blist = ['viajarencamboya.com', 'hangbiz.com', 'httpexploracamboya.com']
 
 # MODULE FOR SUBMISSIONS
 def submissions():
