@@ -9,7 +9,7 @@ print('Logged in as: {0}'.format(r.user.me()))
 print('')
 
 # Blacklist
-blist = ['viajarencamboya.com', 'hangbiz.com', 'httpexploracamboya.com', 'freemom.httpexploracamboya.com', 'thekhmerfood.com']
+blist = ['viajarencamboya.com', 'hangbiz.com', 'httpexploracamboya.com', 'freemom.httpexploracamboya.com', 'thekhmerfood.com', 'nonoverpost.com']
 
 # MODULE FOR SUBMISSIONS
 def submissions():
@@ -31,6 +31,11 @@ def submissions():
             r.subreddit('reddit.com').message('Help Center Report','\nNew Help Center report has been received.\n\nReport details:\n- Report Reason: This is spam\n\n- Reported Users\n1) {0} (https://www.reddit.com/u/{0})\n\n\n\n\n        Custom Text: Spam from domain {3} made at {1} (GTC epoch), posted to https://www.reddit.com{2}\n\n'.format(item.author.name, item.created, item.permalink, item.domain))
             print(' + reported /u/{0} to the admins.\n'.format(item.author.name))
             return
+            
+            # Clear out inbox
+            time.sleep(10)
+            for message in r.inbox.unread(limit=None):
+                message.mark_read()
 
 
 
