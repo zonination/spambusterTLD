@@ -33,7 +33,7 @@ def submissions():
             return
             
             # Clear out inbox
-            time.sleep(10)
+            time.sleep(3)
             for message in r.inbox.unread(limit=None):
                 message.mark_read()
 
